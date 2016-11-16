@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.zero.pictureselect.model.Constant;
+import com.zero.pictureselect.utils.MyImageLoader;
 
 import java.util.ArrayList;
 
@@ -16,10 +18,17 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
+    }
+
+    @Override
+    public void onContentChanged() {
+        imageView = (ImageView) findViewById(R.id.imageView);
     }
 
     public void toSelectPicture(View v) {
@@ -39,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case Constant.RequestCode.ImageCrop:
                 String cropImagePath = data.getStringExtra(Constant.ResultDataKey.PICTURE_CLIP_DATA);
+                MyImageLoader.display(cropImagePath, imageView);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);

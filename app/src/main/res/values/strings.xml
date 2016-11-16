@@ -13,5 +13,6 @@
 
     <string name="message_max_num">Up to %1$s photos can be selected</string>
     <string name="message_error1">Image resource acquisition error</string>
+    <string name="save_ing">Saving picture…</string>
     <string name="picNum">%1$d 张</string>
 </resources>

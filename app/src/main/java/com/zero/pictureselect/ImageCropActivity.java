@@ -1,12 +1,14 @@
 package com.zero.pictureselect;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,10 +18,12 @@ import com.isseiaoki.simplecropview.CropImageView;
 import com.zero.pictureselect.model.Constant;
 import com.zero.pictureselect.utils.BitmapUtil;
 import com.zero.pictureselect.utils.CropUtil;
+import com.zero.pictureselect.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 
 /**
@@ -114,8 +118,35 @@ public class ImageCropActivity extends AppCompatActivity implements View.OnClick
 
             //OK 确认剪裁
             case R.id.t_ok:
-                // TODO: 剪裁操作
+                ProgressDialog.show(ImageCropActivity.this, null, getString(R.string.save_ing), true, false);
+                saveUri = Uri.fromFile(FileUtils.createCropFile(ImageCropActivity.this));
+                saveOutput(cropImageView.getCroppedBitmap());
                 break;
         }
+    }
+
+
+    private void saveOutput(Bitmap croppedImage) {
+        if (saveUri != null) {
+            OutputStream outputStream = null;
+            try {
+                outputStream = getContentResolver().openOutputStream(saveUri);
+                if (outputStream != null) {
+                    croppedImage.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                CropUtil.closeStream(outputStream);
+            }
+            setResult(RESULT_OK, new Intent().putExtra(Constant.ResultDataKey.PICTURE_CLIP_DATA, saveUri.getPath()));
+        }
+        final Bitmap b = croppedImage;
+        new Handler().post(new Runnable() {
+            public void run() {
+                b.recycle();
+            }
+        });
+        finish();
     }
 }
