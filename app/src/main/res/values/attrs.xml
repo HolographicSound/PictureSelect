@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ClipImageLayout">
+        <attr name="HorizontalPadding" format="integer" />
+        <attr name="BorderColor" format="color" />
+        <attr name="ClipDrawable" format="reference" />
+    </declare-styleable>
+</resources>

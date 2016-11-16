@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">PictureSelect</string>
+    <string name="s_yl">Preview</string>
+    <string name="s_ylNum">Preview(%1$d)</string>
+    <string name="s_fs">Send</string>
+    <string name="s_ok">OK</string>
+    <string name="s_fsNum">Send(%1$d/%2$d)</string>
+    <string name="s_selectNum">%1$d/%2$d</string>
+    <string name="s_afz">按分组</string>
+    <string name="s_xj">Camera</string>
+    <string name="s_xz">Select</string>
+
+
+    <string name="message_max_num">Up to %1$s photos can be selected</string>
+    <string name="message_error1">Image resource acquisition error</string>
+    <string name="picNum">%1$d 张</string>
+</resources>

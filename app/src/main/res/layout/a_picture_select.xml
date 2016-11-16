@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- app:contentInsetStart="0dp" -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        style="@style/MyToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/c_dd_393a3e">
+
+        <TextView
+            android:id="@+id/t_toSend"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/btn_round_green_selector"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/s_fs"
+            android:textColor="@color/color_text_click" />
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/v_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar"
+        android:background="#db161616" />
+
+    <!--<GridView
+        TODO 下面的 ???
+        android:cacheColorHint="@android:color/transparent"
+        android:clipChildren="true"
+        android:horizontalSpacing="2dip"
+        android:listSelector="@android:color/transparent"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="3dip"/>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c_dd_393a3e">
+
+
+        <LinearLayout
+            android:id="@+id/folder_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+
+            <TextView
+                android:id="@+id/folder_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_afz"
+                android:textColor="@color/color_text_click"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:src="@mipmap/ic_arrow" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/t_toPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:text="@string/s_yl"
+            android:textColor="@color/color_text_click" />
+    </RelativeLayout>
+</RelativeLayout>

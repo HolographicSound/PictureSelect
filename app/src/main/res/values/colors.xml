@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="wave_waveColor">#25141414</color>
+
+    <color name="white">#ffffffff</color>
+    <color name="white_70">#ADFFFFFF</color>
+    <color name="yellow">#F56E01</color>
+    <color name="red">#ffd94f01</color>
+    <color name="black">#000000</color>
+    <color name="green">#43c117</color>
+    <color name="green_70">#AD43c117</color>
+
+    <color name="c_3">#333333</color>
+    <color name="c_9">#999999</color>
+    <color name="c_20_0">#20000000</color>
+    <color name="c_80_0">#80000000</color>
+    <color name="c_b7_9d9d9d">#b79d9d9d</color>
+    <color name="c_f2_666767">#f2666767</color>
+    <color name="c_dd_393a3e">#dd393a3e</color>
+</resources>
