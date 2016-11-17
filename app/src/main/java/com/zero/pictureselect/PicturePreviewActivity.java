@@ -12,11 +12,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zero.pictureselect.adapter.PicAdapter;
+
 import com.zero.pictureselect.adapter.PreViewPagerAdapter;
-import com.zero.pictureselect.model.Constant;
 import com.zero.pictureselect.model.LocalMedia;
-import com.zero.pictureselect.view.PreviewViewPager;
+import com.zero.pictureselect.model.MConstant;
+import com.zero.pictureselect.otherview.PreviewViewPager;
 
 import java.util.ArrayList;
 
@@ -29,6 +29,7 @@ public class PicturePreviewActivity extends AppCompatActivity implements ViewPag
 
     private ArrayList<String> selectData;
     private int position;
+    private int selectMaxNum;
     private View selectBar, statusBarSpace;
     private Toolbar toolbar;
     private CheckBox selectCheckBox;
@@ -39,12 +40,13 @@ public class PicturePreviewActivity extends AppCompatActivity implements ViewPag
 
 
     //多图预览
-    public static void start(Activity a, ArrayList<LocalMedia> data, int position, ArrayList<String> selectData) {
+    public static void start(Activity a, ArrayList<LocalMedia> data, int position, ArrayList<String> selectData, int selectMaxNum) {
         Intent intent = new Intent(a.getApplicationContext(), PicturePreviewActivity.class);
         intent.putParcelableArrayListExtra("mediaData", data);
         intent.putExtra("position", position);
         intent.putExtra("selectData", selectData);
-        a.startActivityForResult(intent, Constant.RequestCode.PictureSelect);
+        intent.putExtra("maxNum", selectMaxNum);
+        a.startActivityForResult(intent, MConstant.RequestCode.PictureSelect);
     }
 
 
@@ -68,6 +70,7 @@ public class PicturePreviewActivity extends AppCompatActivity implements ViewPag
 
     private void initData() {
         position = getIntent().getIntExtra("position", 0);
+        selectMaxNum = getIntent().getIntExtra("maxNum", 8);
         selectData = getIntent().getStringArrayListExtra("selectData");
     }
 
@@ -124,12 +127,12 @@ public class PicturePreviewActivity extends AppCompatActivity implements ViewPag
                 boolean checked = selectCheckBox.isChecked();
                 if (!checked) {
                     selectDataChange(0, localMedia);
-                } else if (selectData.size() < PicAdapter.maxSelectNum) {
+                } else if (selectData.size() < selectMaxNum) {
                     selectDataChange(1, localMedia);
                 } else {
                     selectCheckBox.setChecked(false);
                     Toast.makeText(getApplicationContext(),
-                            getApplicationContext().getString(R.string.message_max_num, PicAdapter.maxSelectNum),
+                            getApplicationContext().getString(R.string.message_max_num, selectMaxNum),
                             Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -149,8 +152,8 @@ public class PicturePreviewActivity extends AppCompatActivity implements ViewPag
     //isDone 是否完成选中操作
     private void sendDataAction(boolean isDone) {
         Intent resultData = new Intent();
-        resultData.putExtra(Constant.ResultDataKey.PICTURE_SELECT_DATA, selectData);
-        resultData.putExtra(Constant.ResultDataKey.PICTURE_PREVIEW_IS_DONE, isDone);
+        resultData.putExtra(MConstant.ResultDataKey.PICTURE_SELECT_DATA, selectData);
+        resultData.putExtra(MConstant.ResultDataKey.PICTURE_PREVIEW_IS_DONE, isDone);
         setResult(RESULT_OK, resultData);
         finish();
     }
@@ -169,7 +172,7 @@ public class PicturePreviewActivity extends AppCompatActivity implements ViewPag
         int selectNum = selectData.size();
         if (selectNum > 0) {
             sendView.setEnabled(true);
-            sendView.setText(getString(R.string.s_fsNum, selectNum, PicAdapter.maxSelectNum));
+            sendView.setText(getString(R.string.s_fsNum, selectNum, selectMaxNum));
         } else {
             sendView.setText(getString(R.string.s_fs));
             sendView.setEnabled(false);

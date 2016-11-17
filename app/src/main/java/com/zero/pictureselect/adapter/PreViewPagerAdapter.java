@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+
 import com.zero.pictureselect.Photoview.PhotoView;
 import com.zero.pictureselect.Photoview.PhotoViewAttacher;
 import com.zero.pictureselect.model.LocalMedia;
@@ -15,6 +16,7 @@ import com.zero.pictureselect.utils.MyImageLoader;
 import com.zero.pictureselect.utils.ScreenUtils;
 
 import java.util.ArrayList;
+
 
 /**
  * Created by hjf on 2016/11/11 17:42.

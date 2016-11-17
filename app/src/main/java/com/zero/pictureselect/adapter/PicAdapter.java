@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
 import com.zero.pictureselect.R;
 import com.zero.pictureselect.model.LocalMedia;
 
@@ -21,8 +22,7 @@ import java.util.ArrayList;
  */
 public class PicAdapter extends CommonRecyclerAdapter<LocalMedia> {
 
-    public static final int maxSelectNum = 8;
-
+    public int maxSelectNum;
     private int actionCode;
     private Context mContext;
     private boolean showCamera = true;
@@ -30,10 +30,11 @@ public class PicAdapter extends CommonRecyclerAdapter<LocalMedia> {
     private OnPictureAction onPictureAction;
 
 
-    public PicAdapter(Context context, int code) {
+    public PicAdapter(Context context, int actionCode, int selectMaxNum) {
         super(context);
-        mContext = context;
-        actionCode = code;
+        this.mContext = context;
+        this.actionCode = actionCode;
+        this.maxSelectNum = selectMaxNum;
     }
 
     @Override

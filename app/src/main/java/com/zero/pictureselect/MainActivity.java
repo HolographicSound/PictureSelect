@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.zero.pictureselect.model.Constant;
+import com.zero.pictureselect.model.MConstant;
 import com.zero.pictureselect.utils.MyImageLoader;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toSelectPicture(View v) {
-        PictureSelectActivity.startSelect(this);
+        PictureSelectActivity.startSelect(this, 1);
     }
 
     public void toCropPicture(View v) {
@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) return;
         switch (requestCode) {
-            case Constant.RequestCode.PictureSelect:
-                ArrayList<String> selectMedias = data.getStringArrayListExtra(Constant.ResultDataKey.PICTURE_SELECT_DATA);
+            case MConstant.RequestCode.PictureSelect:
+                ArrayList<String> selectMedias = data.getStringArrayListExtra(MConstant.ResultDataKey.PICTURE_SELECT_DATA);
                 break;
-            case Constant.RequestCode.ImageCrop:
-                String cropImagePath = data.getStringExtra(Constant.ResultDataKey.PICTURE_CLIP_DATA);
+            case MConstant.RequestCode.ImageCrop:
+                String cropImagePath = data.getStringExtra(MConstant.ResultDataKey.PICTURE_CLIP_DATA);
                 MyImageLoader.display(cropImagePath, imageView);
                 break;
             default:

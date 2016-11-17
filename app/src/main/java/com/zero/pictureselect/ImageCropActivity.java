@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.isseiaoki.simplecropview.CropImageView;
-import com.zero.pictureselect.model.Constant;
+import com.zero.pictureselect.model.MConstant;
 import com.zero.pictureselect.utils.BitmapUtil;
 import com.zero.pictureselect.utils.CropUtil;
 import com.zero.pictureselect.utils.FileUtils;
@@ -41,7 +41,7 @@ public class ImageCropActivity extends AppCompatActivity implements View.OnClick
     public static void start(Activity a, String imagePath) {
         Intent intent = new Intent(a.getApplicationContext(), ImageCropActivity.class);
         intent.putExtra("imagePath", imagePath);
-        a.startActivityForResult(intent, Constant.RequestCode.ImageCrop);
+        a.startActivityForResult(intent, MConstant.RequestCode.ImageCrop);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ImageCropActivity extends AppCompatActivity implements View.OnClick
             } finally {
                 CropUtil.closeStream(outputStream);
             }
-            setResult(RESULT_OK, new Intent().putExtra(Constant.ResultDataKey.PICTURE_CLIP_DATA, saveUri.getPath()));
+            setResult(RESULT_OK, new Intent().putExtra(MConstant.ResultDataKey.PICTURE_CLIP_DATA, saveUri.getPath()));
         }
         final Bitmap b = croppedImage;
         new Handler().post(new Runnable() {

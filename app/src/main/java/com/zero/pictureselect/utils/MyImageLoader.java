@@ -1,8 +1,6 @@
 package com.zero.pictureselect.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -13,6 +11,7 @@ import android.util.LruCache;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 
 import com.zero.pictureselect.R;
 
@@ -62,17 +61,17 @@ public class MyImageLoader {
 
 
     /*单例对象*/
-    private static MyImageLoader myImageLoder;
+    private static MyImageLoader myImageLoader;
 
     public static MyImageLoader getInstance() {
-        if (myImageLoder == null) {
+        if (myImageLoader == null) {
             synchronized (MyImageLoader.class) {
-                if (myImageLoder == null) {
-                    myImageLoder = new MyImageLoader();
+                if (myImageLoader == null) {
+                    myImageLoader = new MyImageLoader();
                 }
             }
         }
-        return myImageLoder;
+        return myImageLoader;
     }
 
     //只调用一次
@@ -262,9 +261,12 @@ public class MyImageLoader {
 
 
     //显示本地图片（带缓存） isCompress 是否需要压缩
-    private void _display(final String imagePath, final ImageView imageView, boolean isCompress) {
+    private void _display(final String imagePath, final ImageView imageView, boolean isCompress, int loadingImage) {
 
         imageView.setTag(imagePath);
+        if (loadingImage != -1) {//加载中图片
+            imageView.setImageResource(loadingImage);
+        }
 
         if (mShowHandler == null) _initShowHandler();
 
@@ -308,11 +310,11 @@ public class MyImageLoader {
 
     //小图
     public static void displays(String imagePath, ImageView imageView) {
-        getInstance()._display(imagePath, imageView, true);
+        getInstance()._display(imagePath, imageView, true, R.color.c_9);
     }
 
     //原图
     public static void display(String imagePath, ImageView imageView) {
-        getInstance()._display(imagePath, imageView, false);
+        getInstance()._display(imagePath, imageView, false, -1);
     }
 }

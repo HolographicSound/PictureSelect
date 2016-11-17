@@ -9,9 +9,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
-import com.zero.pictureselect.model.Constant;
+
 import com.zero.pictureselect.model.LocalMedia;
 import com.zero.pictureselect.model.LocalMediaFolder;
+import com.zero.pictureselect.model.MConstant;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 /**
  * Created by hjf on 2016/11/10 11:19.
  * Used to 本地媒体加载
- * TODO 小数点开头的隐藏文件就不用扫描出来了
  */
 public class LocalMediaLoader {
 
@@ -44,7 +44,7 @@ public class LocalMediaLoader {
                     @Override
                     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                         CursorLoader cursorLoader;
-                        if (mediaType == Constant.MEDIA_TYPE_VIDEO) {
+                        if (mediaType == MConstant.MEDIA_TYPE_VIDEO) {
                             // TODO: 2016/11/10 没做Video扫描
                             cursorLoader = new CursorLoader(
                                     a.getApplicationContext(),
@@ -93,8 +93,9 @@ public class LocalMediaLoader {
                             //当前扫描图片
                             String filePath = mCursor.getString(mCursor.getColumnIndex(IMAGE_PROJECTION[0]));
 
-//                            if (filePath.contains("/.") && !filePath.contains("/.."))
-//                                continue;//TODO 只要是隐藏文件就不管,排除 ..png 等命名文件  此判断是否正确？？？？
+                            // 只要是隐藏文件就不管,排除 ..png 等命名文件
+                            if (filePath.contains("/.") && !filePath.contains("/.."))
+                                continue;
                             allMedia.add(new LocalMedia(filePath, -1));
 
                             //当前扫描文件夹
@@ -114,11 +115,10 @@ public class LocalMediaLoader {
                                 public boolean accept(File dir, String filename) {
                                     return filename.endsWith(".jpg")
                                             || filename.endsWith(".png")
-                                            || filename.endsWith(".jpeg")
-                                            || filename.endsWith(".JPEG");
+                                            || filename.endsWith(".jpeg");
                                 }
                             });
-                            
+
                             //筛选后没符合图片的可能性
                             if (files.length == 0) continue;
 

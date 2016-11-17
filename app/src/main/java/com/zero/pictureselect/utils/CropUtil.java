@@ -8,7 +8,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.zero.pictureselect.model.Constant;
+
+import com.zero.pictureselect.model.MConstant;
 
 import java.io.Closeable;
 import java.io.File;
@@ -35,9 +36,9 @@ public class CropUtil {
 
     public static File getFile4Uri(Context context, ContentResolver resolver, Uri uri) {
         if (uri == null) return null;
-        if (Constant.SCHEME_FILE.equals(uri.getScheme())) {
+        if (MConstant.SCHEME_FILE.equals(uri.getScheme())) {
             return new File(uri.getPath());
-        } else if (Constant.SCHEME_CONTENT.equals(uri.getScheme())) {
+        } else if (MConstant.SCHEME_CONTENT.equals(uri.getScheme())) {
             String[] filePathColumn = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME};
             Cursor cursor = null;
             try {

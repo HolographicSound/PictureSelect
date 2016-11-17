@@ -1,23 +1,26 @@
 package com.zero.pictureselect;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+
+import com.zero.pictureselect.adapter.ItemSpanDecoration;
 import com.zero.pictureselect.adapter.PicAdapter;
-import com.zero.pictureselect.model.Constant;
 import com.zero.pictureselect.model.LocalMedia;
 import com.zero.pictureselect.model.LocalMediaFolder;
+import com.zero.pictureselect.model.MConstant;
+import com.zero.pictureselect.otherview.FolderWindow;
+import com.zero.pictureselect.utils.IntentUtil;
 import com.zero.pictureselect.utils.LocalMediaLoader;
-import com.zero.pictureselect.view.FolderWindow;
-import com.zero.pictureselect.view.LocalClipImageView.ImageCropActivity2;
 
 import java.util.ArrayList;
 
@@ -37,27 +40,40 @@ public class PictureSelectActivity extends AppCompatActivity implements View.OnC
 
     private PicAdapter picAdapter;
     private int actionCode = 1;//0裁剪 1选择
+    private int selectMaxNum = 8;
+    private String cameraImagePath;
     //所有的文件夹数据
     private ArrayList<LocalMediaFolder> allImageFolders;
 
 
     //外部进来的方法
     public static void startCrop(Activity activity) {
-        Intent intent = new Intent(activity, PictureSelectActivity.class);
-        intent.putExtra("actionCode", 0);
-        activity.startActivityForResult(intent, Constant.RequestCode.ImageCrop);
+        Intent intent = _getIntent(activity.getApplicationContext(), 0);
+        activity.startActivityForResult(intent, MConstant.RequestCode.ImageCrop);
     }
 
-    public static void startSelect(Activity activity) {
-        Intent intent = new Intent(activity, PictureSelectActivity.class);
-        intent.putExtra("actionCode", 1);
-        activity.startActivityForResult(intent, Constant.RequestCode.PictureSelect);
+    public static void startCrop(Fragment fragment) {
+        Intent intent = _getIntent(fragment.getContext(), 0);
+        fragment.startActivityForResult(intent, MConstant.RequestCode.ImageCrop);
+    }
+
+    public static void startSelect(Activity activity, int selectMaxNum) {
+        Intent intent = _getIntent(activity.getApplicationContext(), 1);
+        intent.putExtra("maxNum", selectMaxNum);
+        activity.startActivityForResult(intent, MConstant.RequestCode.PictureSelect);
+    }
+
+    private static Intent _getIntent(Context context, int actionCode) {
+        Intent intent = new Intent(context, PictureSelectActivity.class);
+        intent.putExtra("actionCode", actionCode);
+        return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         actionCode = getIntent().getIntExtra("actionCode", 1);
+        selectMaxNum = getIntent().getIntExtra("maxNum", 8);
         setContentView(R.layout.a_picture_select);
         loadLocalImage();
     }
@@ -97,7 +113,8 @@ public class PictureSelectActivity extends AppCompatActivity implements View.OnC
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
-        mRecyclerView.setAdapter(picAdapter = new PicAdapter(getApplicationContext(), actionCode));
+        mRecyclerView.addItemDecoration(new ItemSpanDecoration(1));
+        mRecyclerView.setAdapter(picAdapter = new PicAdapter(getApplicationContext(), actionCode, selectMaxNum));
         picAdapter.setOnPictureActionListener(this);
     }
 
@@ -144,7 +161,7 @@ public class PictureSelectActivity extends AppCompatActivity implements View.OnC
 
 
     private void loadLocalImage() {
-        LocalMediaLoader.startLoader(this, Constant.MEDIA_TYPE_IMAGE, new LocalMediaLoader.LocalMediaLoadListener() {
+        LocalMediaLoader.startLoader(this, MConstant.MEDIA_TYPE_IMAGE, new LocalMediaLoader.LocalMediaLoadListener() {
             @Override
             public void loadComplete(ArrayList<LocalMediaFolder> data) {
                 allImageFolders = data;
@@ -155,6 +172,7 @@ public class PictureSelectActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
+
 
     @Override
     public void onPictureSelect(int selectNum) {
@@ -167,20 +185,19 @@ public class PictureSelectActivity extends AppCompatActivity implements View.OnC
             preView.setEnabled(true);
             sendView.setEnabled(true);
             preView.setText(getString(R.string.s_ylNum, selectNum));
-            sendView.setText(getString(R.string.s_fsNum, selectNum, PicAdapter.maxSelectNum));
+            sendView.setText(getString(R.string.s_fsNum, selectNum, selectMaxNum));
         }
     }
 
     @Override
     public void onTakePhoto() {
-        Toast.makeText(getApplicationContext(), getString(R.string.s_xj), Toast.LENGTH_LONG).show();
+        cameraImagePath = IntentUtil.openCamera(this);
     }
 
     @Override
     public void onPictureClick(int position) {
         if (actionCode == 0) {//截图(两种截图界面)
-//            ImageCropActivity.start(this, picAdapter.getData(position).getPath());
-            ImageCropActivity2.start(this, picAdapter.getData(position).getPath());
+            ImageCropActivity.start(this, picAdapter.getData(position).getPath());
         } else if (actionCode == 1) {//选图
             jump2preview(picAdapter.getDatas(), position, picAdapter.getSelectMediasPath());
         }
@@ -188,38 +205,58 @@ public class PictureSelectActivity extends AppCompatActivity implements View.OnC
 
 
     private void jump2preview(ArrayList<LocalMedia> data, int position, ArrayList<String> selectData) {
-        PicturePreviewActivity.start(this, data, position, selectData);
+        PicturePreviewActivity.start(this, data, position, selectData, selectMaxNum);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) return;
         switch (requestCode) {
-            case Constant.RequestCode.PictureSelect:
-                ArrayList<String> tempSelectMedias = data.getStringArrayListExtra(Constant.ResultDataKey.PICTURE_SELECT_DATA);
+
+            //多选返回
+            case MConstant.RequestCode.PictureSelect:
+                ArrayList<String> tempSelectMedias = data.getStringArrayListExtra(MConstant.ResultDataKey.PICTURE_SELECT_DATA);
                 picAdapter.setSelectMedias(tempSelectMedias);
-                if (data.getBooleanExtra(Constant.ResultDataKey.PICTURE_PREVIEW_IS_DONE, false)) {
+                if (data.getBooleanExtra(MConstant.ResultDataKey.PICTURE_PREVIEW_IS_DONE, false)) {
                     sendSelectData();
                 }
                 break;
-            case Constant.RequestCode.ImageCrop:
-                String path = data.getStringExtra(Constant.ResultDataKey.PICTURE_CLIP_DATA);
-                sendClipData(path);
+
+            //切图返回
+            case MConstant.RequestCode.ImageCrop:
+                String pathCrop = data.getStringExtra(MConstant.ResultDataKey.PICTURE_CLIP_DATA);
+                sendClipData(pathCrop);
                 break;
+
+            //照相返回
+            case MConstant.RequestCode.OpenCamera:
+                if (actionCode == 0) {
+                    ImageCropActivity.start(this, cameraImagePath);
+                } else if (actionCode == 1) {
+                    ArrayList<String> selectMediasPath = new ArrayList<>();
+                    selectMediasPath.add(cameraImagePath);
+                    ArrayList<LocalMedia> selectMedia = new ArrayList<>();
+                    selectMedia.add(new LocalMedia(cameraImagePath, -1));
+                    jump2preview(selectMedia, 0, selectMediasPath);
+                }
+                break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
+                break;
         }
     }
 
+
     private void sendClipData(String path) {
-        setResult(RESULT_OK, new Intent().putExtra(Constant.ResultDataKey.PICTURE_CLIP_DATA, path));
+        setResult(RESULT_OK, new Intent().putExtra(MConstant.ResultDataKey.PICTURE_CLIP_DATA, path));
         finish();
     }
 
     //发送消息会原来界面
     private void sendSelectData() {
         ArrayList<String> selectMedias = picAdapter.getSelectMediasPath();
-        setResult(RESULT_OK, new Intent().putStringArrayListExtra(Constant.ResultDataKey.PICTURE_SELECT_DATA, selectMedias));
+        setResult(RESULT_OK, new Intent().putStringArrayListExtra(MConstant.ResultDataKey.PICTURE_SELECT_DATA, selectMedias));
         finish();
     }
 }
