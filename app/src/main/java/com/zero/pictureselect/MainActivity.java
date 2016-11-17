@@ -1,7 +1,10 @@
 package com.zero.pictureselect;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +12,9 @@ import android.widget.ImageView;
 import com.zero.pictureselect.model.MConstant;
 import com.zero.pictureselect.utils.MyImageLoader;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 
@@ -24,6 +30,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
+        StorageManager storageManager = (StorageManager) getSystemService(Context.STORAGE_SERVICE);
+        try {
+            Class<?>[] paramClasses = {};
+            Method getVolumePathsMethod = StorageManager.class.getMethod("getVolumePaths", paramClasses);
+            getVolumePathsMethod.setAccessible(true);
+            Object[] params = {};
+            //一般情况：0内存 1sd卡 2外置sd卡
+            Object invoke = getVolumePathsMethod.invoke(storageManager, params);
+            for (int i = 0; i < ((String[]) invoke).length; i++) {
+                System.out.println(((String[]) invoke)[i]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

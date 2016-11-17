@@ -23,7 +23,7 @@ public class IntentUtil {
 
     //打开相机 -- （返回）照相图片的位置
     public static String openCamera(Activity activity) {
-        return openCamera(activity, null, MConstant.IMAGE_TEMP_PATH);
+        return openCamera(activity, null, CropUtil.getCropImageStoragePath(activity.getApplicationContext()));
     }
 
     public static String openCamera(Activity activity, Fragment fragment, String defaultPath) {

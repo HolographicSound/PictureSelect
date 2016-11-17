@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.zero.pictureselect.R;
 import com.zero.pictureselect.model.MConstant;
+import com.zero.pictureselect.utils.CropUtil;
 
 
 /**
@@ -39,7 +40,6 @@ public class ImageCropActivity2 extends AppCompatActivity implements View.OnClic
         findViewById(R.id.clip_back).setOnClickListener(this);
         findViewById(R.id.clip_commit).setOnClickListener(this);
         setClipImage();
-
     }
 
     private void setClipImage() {
@@ -56,7 +56,7 @@ public class ImageCropActivity2 extends AppCompatActivity implements View.OnClic
             //保存在临时文件返回
             case R.id.clip_commit:
                 ProgressDialog d = ProgressDialog.show(this, null, "正在剪裁..");
-                String path = mClipImageLayout.clip(MConstant.IMAGE_TEMP_PATH);
+                String path = mClipImageLayout.clip(CropUtil.getCropImageStoragePath(getApplicationContext()));
                 Intent i = new Intent();
                 i.putExtra(MConstant.ResultDataKey.PICTURE_CLIP_DATA, path);
                 setResult(RESULT_OK, i);

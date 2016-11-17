@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -33,6 +34,9 @@ public class CropUtil {
         }
     }
 
+    public static String getCropImageStoragePath(Context context) {
+        return AndroidUtil.getStorageDirectory(context, 0) + "/DCIM/Screenshots/";
+    }
 
     public static File getFile4Uri(Context context, ContentResolver resolver, Uri uri) {
         if (uri == null) return null;

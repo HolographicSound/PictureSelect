@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import com.zero.pictureselect.LocalClipImageView.ImageCropActivity2;
 import com.zero.pictureselect.adapter.ItemSpanDecoration;
 import com.zero.pictureselect.adapter.PicAdapter;
 import com.zero.pictureselect.model.LocalMedia;
@@ -197,7 +198,8 @@ public class PictureSelectActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onPictureClick(int position) {
         if (actionCode == 0) {//截图(两种截图界面)
-            ImageCropActivity.start(this, picAdapter.getData(position).getPath());
+//            ImageCropActivity.start(this, picAdapter.getData(position).getCropImageStoragePath());
+            ImageCropActivity2.start(this, picAdapter.getData(position).getPath());
         } else if (actionCode == 1) {//选图
             jump2preview(picAdapter.getDatas(), position, picAdapter.getSelectMediasPath());
         }

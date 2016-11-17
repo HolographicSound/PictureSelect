@@ -79,7 +79,7 @@ public class ImageCropActivity extends AppCompatActivity implements View.OnClick
         //获取文件的旋转角度
         File file = CropUtil.getFile4Uri(this, getContentResolver(), sourceUri);
         int exifRotation = BitmapUtil.getExifRotation(file.getPath());
-//        int exifRotation = BitmapUtil.getExifRotation(sourceUri.getPath());
+//        int exifRotation = BitmapUtil.getExifRotation(sourceUri.getCropImageStoragePath());
 
         // 设置剪裁用的Bitmap
         InputStream is = null;

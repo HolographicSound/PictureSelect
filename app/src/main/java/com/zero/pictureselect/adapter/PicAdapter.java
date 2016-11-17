@@ -49,6 +49,7 @@ public class PicAdapter extends CommonRecyclerAdapter<LocalMedia> {
 
     @Override
     public void onBindView(ViewHolder mViewHolder, final LocalMedia mediaFolder, final int position) {
+        mViewHolder.convertToSquare(mContext);
         mViewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +130,6 @@ public class PicAdapter extends CommonRecyclerAdapter<LocalMedia> {
     private int getColor(@ColorRes int colorRes) {
         return ContextCompat.getColor(mContext, colorRes);
     }
-
 
     private void myNotify(LocalMedia mediaFolder) {
         int index = getDatas().indexOf(mediaFolder);

@@ -1,7 +1,5 @@
 package com.zero.pictureselect.model;
 
-import android.os.Environment;
-
 /**
  * Created by hjf on 2016/11/10 10:27.
  * Used to 常量存有接口
@@ -13,9 +11,6 @@ public interface MConstant {
 
     String SCHEME_FILE = "file";
     String SCHEME_CONTENT = "content";
-
-    //照片临时存放目录
-    String IMAGE_TEMP_PATH = Environment.getExternalStorageDirectory() + "/CMtemps/tempPath/";
 
     //请求Code
     interface RequestCode {

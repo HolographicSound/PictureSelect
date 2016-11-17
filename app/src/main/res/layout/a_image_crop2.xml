@@ -40,7 +40,7 @@
             android:textColor="@color/color_text_click" />
     </RelativeLayout>
 
-    <com.zero.pictureselect.view.LocalClipImageView.CropImageView
+    <com.zero.pictureselect.LocalClipImageView.CropImageView
         android:id="@+id/id_clipImageLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

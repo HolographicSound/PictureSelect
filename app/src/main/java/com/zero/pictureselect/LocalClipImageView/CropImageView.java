@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.RelativeLayout;
 
-
 import com.zero.pictureselect.R;
 import com.zero.pictureselect.utils.MyImageLoader;
 
@@ -19,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 图片切割视图
@@ -151,10 +151,10 @@ public class CropImageView extends RelativeLayout {
         File f = new File(path);
         if (!f.exists())
             f.mkdirs();
-        SimpleDateFormat t = new SimpleDateFormat("yyyyMMddssSSS");
+        SimpleDateFormat t = new SimpleDateFormat("yyyyMMddssSSS", Locale.CHINA);
         String filename = "CM" + (t.format(new Date())) + ".jpg";
-        // TODO: 有必要可以使用 MD5
-//        filename = new Md5FileNameGenerator().generate(filename);//MD5
+        // 有必要可以使用 MD5
+        // filename = new Md5FileNameGenerator().generate(filename);//MD5
         File filePath = new File(f, filename);
         try {
             b = clip();
@@ -175,5 +175,11 @@ public class CropImageView extends RelativeLayout {
                 b.recycle();
         }
         return filePath.getPath();
+    }
+
+    //递归生成文件夹
+    private boolean makeFileDirs(File dir) {
+        if (!dir.exists() && makeFileDirs(dir.getParentFile())) dir.mkdir();
+        return true;
     }
 }

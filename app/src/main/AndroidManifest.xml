@@ -34,7 +34,7 @@
             android:label="图片裁剪"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".view.LocalClipImageView.ImageCropActivity2"
+            android:name=".LocalClipImageView.ImageCropActivity2"
             android:label="图片裁剪"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>

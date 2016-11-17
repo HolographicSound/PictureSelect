@@ -59,7 +59,7 @@ public class LocalMediaLoader {
                                     //sortOrder：排序依据。ASC (默认升序)，DESC（降序）
                                     VIDEO_PROJECTION[2] + " DESC"
                             );
-                        } else/* if (mediaType == Constant.MEDIA_TYPE_IMAGE) */ {//默认图片
+                        } else/* if (mediaType == MConstant.MEDIA_TYPE_IMAGE) */ {//默认图片
                             cursorLoader = new CursorLoader(
                                     a.getApplicationContext(),
                                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,//查询表名

@@ -31,14 +31,6 @@
         android:layout_below="@id/toolBar"
         android:background="#db161616" />
 
-    <!--<GridView
-        TODO 下面的 ???
-        android:cacheColorHint="@android:color/transparent"
-        android:clipChildren="true"
-        android:horizontalSpacing="2dip"
-        android:listSelector="@android:color/transparent"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="3dip"/>-->
 
     <RelativeLayout
         android:layout_width="match_parent"

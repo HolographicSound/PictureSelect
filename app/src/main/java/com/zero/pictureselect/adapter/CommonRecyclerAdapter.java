@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zero.pictureselect.utils.MyImageLoader;
+import com.zero.pictureselect.utils.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +141,14 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
 
         public View getConvertView() {
             return this.itemView;
+        }
+
+        public void convertToSquare(Context context) {
+            int screenWidth = ScreenUtils.getScreenWidth(context);
+            int screenHeight = (screenWidth - 6) / 3;
+            ViewGroup.LayoutParams layoutParams = this.itemView.getLayoutParams();
+            layoutParams.height = screenHeight;
+            this.itemView.setLayoutParams(layoutParams);
         }
 
         //TextView 设置方法
